@@ -12,15 +12,14 @@ import javax.validation.constraints.NotNull
 @Entity
 @Table(name = "chave_pix")
 class ChavePix(
-//    @Column(nullable = false, unique = true)
+    @Column(nullable = false, unique = true)
     @field:NotBlank
     var chave: String,
 
-//    @Column(nullable = false)
     @field:NotNull
-    val tipo: TipoDaChave,
+    val tipoChave: TipoDaChave,
 
-    val conta: TipoDaConta
+    val tipoConta: TipoDaConta
 
 ) {
     @Id
@@ -28,6 +27,5 @@ class ChavePix(
     @Column(nullable = false)
     var id: UUID? = null
 
-//    @Column(nullable = false, updatable = false)
     var criadoEm: LocalDateTime = LocalDateTime.now()
 }

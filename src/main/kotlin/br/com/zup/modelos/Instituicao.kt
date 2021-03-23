@@ -1,17 +1,20 @@
 package br.com.zup.modelos
 
-import javax.persistence.Entity
-import javax.persistence.GeneratedValue
-import javax.persistence.Id
-import javax.persistence.Table
+import javax.persistence.*
+import javax.validation.constraints.NotBlank
 
 @Entity
 @Table(name = "instituicao")
 class Instituicao(
 
+    @Column(nullable = false)
+    @field:NotBlank
     val nome: String,
-    val isbn: String?
+    @Column(nullable = false)
+    @field:NotBlank
+    val ispb: String
 ) {
+    @Column(nullable = false)
     @Id
     @GeneratedValue
     var id: Long? = null

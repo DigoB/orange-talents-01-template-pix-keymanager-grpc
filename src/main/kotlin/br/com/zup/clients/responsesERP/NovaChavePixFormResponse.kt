@@ -1,5 +1,7 @@
-package br.com.zup.clients.responses
+package br.com.zup.clients.responsesERP
 
+import br.com.zup.clients.responsesBacen.BankAccount
+import br.com.zup.clients.responsesBacen.KeyType
 import java.time.LocalDateTime
 
 class NovaChavePixFormResponse(

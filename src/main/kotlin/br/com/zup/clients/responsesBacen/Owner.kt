@@ -1,4 +1,4 @@
-package br.com.zup.clients.responses
+package br.com.zup.clients.responsesERP
 
 data class Owner(
 

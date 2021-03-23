@@ -1,23 +1,24 @@
 package br.com.zup.controllers
 
-import br.com.zup.CadastraPixRequest
-import br.com.zup.CadastraPixResponse
-import br.com.zup.PixGrpcServiceGrpc
-import br.com.zup.TipoDaChave
+import br.com.zup.*
 import br.com.zup.clients.ChavePixClient
 import br.com.zup.clients.ClientERP
-import br.com.zup.clients.requests.CreatePixKeyRequest
-import br.com.zup.clients.responses.*
-import br.com.zup.modelos.ChavePix
-import br.com.zup.modelos.TipoConta
+import br.com.zup.clients.responsesERP.BuscaPorClienteResponse
+import br.com.zup.exceptions.ErrorHandler
+import br.com.zup.modelos.*
 import br.com.zup.repositories.ChavePixRepository
+import br.com.zup.repositories.ContaRepository
+import io.grpc.Status
 import io.grpc.stub.StreamObserver
 import org.slf4j.LoggerFactory
 import javax.inject.Singleton
 import javax.transaction.Transactional
+import javax.validation.ConstraintViolationException
 
+@ErrorHandler
 @Singleton
 open class CriaChavePixEndpoint(
+    val contaRepository: ContaRepository,
     val chavePixRepository: ChavePixRepository,
     val chavePixClient: ChavePixClient,
     val clientERP: ClientERP
@@ -29,56 +30,47 @@ open class CriaChavePixEndpoint(
     open override fun cadastraPix(request: CadastraPixRequest, responseObserver: StreamObserver<CadastraPixResponse>) {
 
         LOGGER.info("$request")
-        try {
-            val buscaClienteERP = clientERP.buscaClienteERP(request.clienteId)
 
-            val buscaContaERP = clientERP.buscaContaERP(request.clienteId, request.tipoDaConta.toString())
-
-            if (request.tipoDaChave.equals(TipoDaChave.CPF) && buscaClienteERP.cpf != request.chave) {
-                throw IllegalArgumentException("CPF invalido")
-            }
-
-            val novaChavePix = ChavePix(
-                chave = request.chave,
-                tipo = request.tipoDaChave,
-                conta = request.tipoDaConta,
-
-                )
-
-            chavePixClient.cadastra(
-                CreatePixKeyRequest(
-                    keyType = KeyType.CPF,
-                    key = request.chave,
-                    bankAccount = BankAccount(
-                        participant = buscaClienteERP.instituicao.ispb,
-                        buscaContaERP.agencia,
-                        buscaContaERP.numero,
-                        AccountType.getAccountType(TipoConta.CONTA_CORRENTE)
-                    ), owner = Owner(
-                        type = Type.NATURAL_PERSON,
-                        name = buscaClienteERP.nome,
-                        taxIdNumber = buscaClienteERP.cpf
-                    )
-                )
-            )
-
-            chavePixRepository.save(novaChavePix)
-
-
-            val response = CadastraPixResponse.newBuilder().apply {
-                clienteId = request.clienteId
-                pixId = request.chave
-            }.build()
-
-            responseObserver.onNext(response)
-            responseObserver.onCompleted()
-
-        } catch (e: Exception) {
-            responseObserver.onError(e)
-            responseObserver.onCompleted()
+        LOGGER.info("Verificando se a chave já está cadastrada")
+        if (chavePixRepository.existsByChave(request.chave)) {
+            throw IllegalStateException("Chave já cadastrada!")
         }
 
+        try {
 
+            val possivelConta = contaRepository.findByClienteId(request.clienteId)
+
+            val conta = if (possivelConta.isPresent) possivelConta.get()
+            else clientERP.buscaContaERP(request.clienteId, request.tipoDaConta.toString()).let {
+                if (it == null) {
+                    throw IllegalStateException("Conta não encontrada")
+                }
+                contaRepository.save(it.toModel())
+            }
+
+            val novaChavePix = request.paraChavePixForm()
+
+            chavePixRepository.save(novaChavePix.paraChavePix())
+
+            LOGGER.info("Cadastrando chave PIX")
+            chavePixClient.cadastra(novaChavePix.paraChavePixRequest(conta))
+
+        } catch (e: ConstraintViolationException) {
+            responseObserver.onError(
+                Status.INVALID_ARGUMENT
+                    .withDescription("Request com parametros inválidos")
+                    .asRuntimeException()
+            )
+        }
+
+        LOGGER.info("Gerando Response do cadastro de chave")
+        val response = CadastraPixResponse.newBuilder().apply {
+            clienteId = request.clienteId
+            pixId = request.chave
+        }.build()
+
+        responseObserver.onNext(response)
+        responseObserver.onCompleted()
     }
 
 }

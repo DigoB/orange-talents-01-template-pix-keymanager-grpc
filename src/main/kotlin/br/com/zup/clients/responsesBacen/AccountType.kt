@@ -1,12 +1,12 @@
-package br.com.zup.clients.responses
+package br.com.zup.clients.responsesBacen
 
-import br.com.zup.modelos.TipoConta
+import br.com.zup.TipoDaConta
 
 enum class AccountType {
     CACC, SVGS;
 
     companion object {
-        fun getAccountType(tipoConta: TipoConta): AccountType {
+        fun getAccountType(tipoConta: TipoDaConta): AccountType {
             if("CONTA_CORRENTE".equals(tipoConta.name)){
                 return CACC
             }

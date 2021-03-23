@@ -1,5 +1,6 @@
-package br.com.zup.clients.responses
+package br.com.zup.clients.responsesBacen
 
+import br.com.zup.clients.responsesERP.Owner
 import java.time.LocalDateTime
 
 class CreatePixKeyResponse(

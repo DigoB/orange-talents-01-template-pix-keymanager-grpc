@@ -1,5 +1,7 @@
 package br.com.zup.validations
 
+
+// TODO: 23/03/2021 Implementar validador de chave Pix no Endpoint
 //@MustBeDocumented
 //@Target(AnnotationTarget.CLASS, AnnotationTarget.TYPE)
 //@Retention(AnnotationRetention.RUNTIME)

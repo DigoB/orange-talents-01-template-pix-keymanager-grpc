@@ -1,4 +1,4 @@
-package br.com.zup.clients.responses
+package br.com.zup.clients.responsesERP
 
 import br.com.zup.modelos.TipoConta
 

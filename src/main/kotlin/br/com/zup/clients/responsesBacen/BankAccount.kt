@@ -1,4 +1,6 @@
-package br.com.zup.clients.responses
+package br.com.zup.clients.responsesBacen
+
+import br.com.zup.clients.responsesBacen.AccountType
 
 data class BankAccount(
 
