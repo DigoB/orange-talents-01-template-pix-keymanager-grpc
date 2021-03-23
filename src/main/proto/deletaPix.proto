@@ -1,0 +1,20 @@
+syntax = "proto3";
+
+option java_multiple_files = true;
+option java_package = "br.com.zup";
+option java_outer_classname = "DeletaPixGrpc";
+
+package br.com.zup;
+
+service DeletaPixService {
+  rpc deletaPix(DeletaPixRequest) returns (DeletaPixResponse) {}
+}
+
+message DeletaPixRequest {
+  string chave = 1;
+  string clienteId = 2;
+}
+
+message DeletaPixResponse {
+  string message = 1;
+}

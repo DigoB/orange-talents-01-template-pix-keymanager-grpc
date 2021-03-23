@@ -1,6 +1,6 @@
 package br.com.zup.exceptions
 
-import br.com.zup.controllers.CriaChavePixEndpoint
+import br.com.zup.endpoints.CriaChavePixEndpoint
 import io.grpc.Status
 import io.grpc.stub.StreamObserver
 import io.micronaut.aop.InterceptorBean

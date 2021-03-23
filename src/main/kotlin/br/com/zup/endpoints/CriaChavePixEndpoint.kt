@@ -1,11 +1,9 @@
-package br.com.zup.controllers
+package br.com.zup.endpoints
 
 import br.com.zup.*
 import br.com.zup.clients.ChavePixClient
 import br.com.zup.clients.ClientERP
-import br.com.zup.clients.responsesERP.BuscaPorClienteResponse
 import br.com.zup.exceptions.ErrorHandler
-import br.com.zup.modelos.*
 import br.com.zup.repositories.ChavePixRepository
 import br.com.zup.repositories.ContaRepository
 import io.grpc.Status
@@ -17,7 +15,7 @@ import javax.validation.ConstraintViolationException
 
 @ErrorHandler
 @Singleton
-open class CriaChavePixEndpoint(
+class CriaChavePixEndpoint(
     val contaRepository: ContaRepository,
     val chavePixRepository: ChavePixRepository,
     val chavePixClient: ChavePixClient,
@@ -27,7 +25,7 @@ open class CriaChavePixEndpoint(
     private val LOGGER = LoggerFactory.getLogger(this.javaClass)
 
     @Transactional
-    open override fun cadastraPix(request: CadastraPixRequest, responseObserver: StreamObserver<CadastraPixResponse>) {
+    override fun cadastraPix(request: CadastraPixRequest, responseObserver: StreamObserver<CadastraPixResponse>) {
 
         LOGGER.info("$request")
 
@@ -37,6 +35,8 @@ open class CriaChavePixEndpoint(
         }
 
         try {
+
+            LOGGER.info("Verificando se a conta existe")
 
             val possivelConta = contaRepository.findByClienteId(request.clienteId)
 
@@ -48,8 +48,11 @@ open class CriaChavePixEndpoint(
                 contaRepository.save(it.toModel())
             }
 
+            LOGGER.info("Conta encontrada")
+
             val novaChavePix = request.paraChavePixForm()
 
+            LOGGER.info("Salvando chave no banco de dados")
             chavePixRepository.save(novaChavePix.paraChavePix())
 
             LOGGER.info("Cadastrando chave PIX")

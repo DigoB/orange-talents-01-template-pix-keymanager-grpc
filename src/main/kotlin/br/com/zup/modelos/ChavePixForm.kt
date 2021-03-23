@@ -8,7 +8,6 @@ import br.com.zup.clients.responsesBacen.BankAccount
 import br.com.zup.clients.responsesBacen.KeyType
 import br.com.zup.clients.responsesERP.Owner
 import br.com.zup.clients.responsesERP.Type
-import br.com.zup.controllers.toModel
 import javax.validation.constraints.NotBlank
 import javax.validation.constraints.NotNull
 import javax.validation.constraints.Size
