@@ -12,4 +12,5 @@ interface ContaRepository: JpaRepository<Conta, Long> {
 
     @Query("SELECT c FROM Conta c WHERE c.titular.id = :clienteId")
     fun findByClienteId(clienteId: String?): Optional<Conta>
+
 }

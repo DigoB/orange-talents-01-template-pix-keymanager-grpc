@@ -22,12 +22,13 @@ data class ChavePixForm(@field:NotBlank
                         @field:NotNull
                         val tipoDaConta: TipoDaConta
 ) {
-    fun paraChavePix() : ChavePix {
+    fun paraChavePix(conta: Conta) : ChavePix {
         return ChavePix(
             chave = this.chave,
             tipoChave = this.tipoDaChave,
-            tipoConta = this.tipoDaConta
-        )
+            tipoConta = this.tipoDaConta,
+            conta = conta
+            )
     }
 
     fun paraChavePixRequest(conta: Conta) : CreatePixKeyRequest {

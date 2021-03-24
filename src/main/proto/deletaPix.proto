@@ -11,10 +11,11 @@ service DeletaPixService {
 }
 
 message DeletaPixRequest {
-  string chave = 1;
-  string clienteId = 2;
+  string clientId = 1;
+  string pixId = 2;
 }
 
 message DeletaPixResponse {
-  string message = 1;
+  string clientId = 1;
+  string pixId    = 2;
 }

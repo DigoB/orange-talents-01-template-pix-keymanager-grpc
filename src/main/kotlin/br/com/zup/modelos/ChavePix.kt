@@ -19,13 +19,16 @@ class ChavePix(
     @field:NotNull
     val tipoChave: TipoDaChave,
 
-    val tipoConta: TipoDaConta
+    val tipoConta: TipoDaConta,
+
+    @field:ManyToOne
+    val conta: Conta
 
 ) {
     @Id
     @GeneratedValue
     @Column(nullable = false)
-    var id: UUID? = null
+    var id: Long? = null
 
     var criadoEm: LocalDateTime = LocalDateTime.now()
 }

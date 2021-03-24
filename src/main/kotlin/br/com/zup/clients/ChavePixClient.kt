@@ -20,6 +20,6 @@ interface ChavePixClient {
 
     @Delete("/api/v1/pix/keys/{key}",
         consumes = [MediaType.APPLICATION_XML], produces = [MediaType.APPLICATION_XML])
-    fun deleta(@PathVariable key: String, @Body deletaPixBacenRequest: DeletaPixBacenRequest): HttpResponse<Any>
+    fun deleta(@PathVariable key: String, @Body deletaPixBacenRequest: DeletaPixBacenRequest?): HttpResponse<Any>
 
 }

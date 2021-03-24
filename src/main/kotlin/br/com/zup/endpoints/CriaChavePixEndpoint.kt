@@ -53,7 +53,7 @@ class CriaChavePixEndpoint(
             val novaChavePix = request.paraChavePixForm()
 
             LOGGER.info("Salvando chave no banco de dados")
-            chavePixRepository.save(novaChavePix.paraChavePix())
+            chavePixRepository.save(novaChavePix.paraChavePix(conta))
 
             LOGGER.info("Cadastrando chave PIX")
             chavePixClient.cadastra(novaChavePix.paraChavePixRequest(conta))

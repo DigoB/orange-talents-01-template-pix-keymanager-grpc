@@ -3,12 +3,12 @@ package br.com.zup
 import br.com.zup.clients.responsesERP.BuscaPorClienteResponse
 import br.com.zup.modelos.*
 
-fun CadastraPixRequest.toModel(): ChavePix {
+fun CadastraPixRequest.toModel(conta: Conta): ChavePix {
     return ChavePix(
         chave = this.chave,
         tipoChave = this.tipoDaChave,
-        tipoConta = this.tipoDaConta
-    )
+        tipoConta = this.tipoDaConta,
+        conta = conta)
 }
 
 fun CadastraPixRequest.paraChavePixForm(): ChavePixForm {
