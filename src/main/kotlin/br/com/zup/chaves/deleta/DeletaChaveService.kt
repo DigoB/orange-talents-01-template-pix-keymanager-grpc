@@ -1,11 +1,12 @@
-package br.com.zup.services
+package br.com.zup.chaves.deleta
 
-import br.com.zup.clients.ChavePixClient
+import br.com.zup.clients.ItauClient
 import br.com.zup.clients.requests.DeletaPixBacenRequest
 import br.com.zup.clients.requests.DeletaPixRequest
 import br.com.zup.exceptions.ChaveNaoEncontradaException
 import br.com.zup.exceptions.ErrorHandler
-import br.com.zup.repositories.ChavePixRepository
+import br.com.zup.chaves.ChavePixRepository
+import io.micronaut.http.HttpStatus
 import org.slf4j.LoggerFactory
 import javax.inject.Singleton
 import javax.transaction.Transactional
@@ -15,7 +16,7 @@ import javax.validation.Valid
 @Singleton
 open class DeletaChaveService(
     val chavePixRepository: ChavePixRepository,
-    val chavePixClient: ChavePixClient,
+    val itauClient: ItauClient,
 ) {
 
     private val logger = LoggerFactory.getLogger(this::class.java)
@@ -41,7 +42,10 @@ open class DeletaChaveService(
 
         logger.info("Solicitando delete da chave no banco central")
 
-        val response = chavePixClient.deleta(request.key, request)
+        val response = itauClient.deleta(request.key, request)
+        if (response.status != HttpStatus.OK) {
+            throw IllegalStateException("Erro ao remover Chave Pix no Banco Central")
+        }
 
 
 

@@ -1,6 +1,6 @@
-package br.com.zup.repositories
+package br.com.zup.contas
 
-import br.com.zup.modelos.Conta
+import br.com.zup.contas.Conta
 import io.micronaut.data.annotation.Query
 import io.micronaut.data.annotation.Repository
 import io.micronaut.data.jpa.repository.JpaRepository

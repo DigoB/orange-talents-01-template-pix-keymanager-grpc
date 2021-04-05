@@ -9,7 +9,7 @@ import io.micronaut.http.annotation.QueryValue
 import io.micronaut.http.client.annotation.Client
 
 @Client("http://localhost:9091")
-interface ClientERP {
+interface BacenClient {
 
 //    @Get(
 //        "/api/v1/clientes/{clienteId}",

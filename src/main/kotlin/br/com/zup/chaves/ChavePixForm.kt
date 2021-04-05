@@ -1,13 +1,14 @@
-package br.com.zup.modelos
+package br.com.zup.chaves
 
 import br.com.zup.TipoDaChave
 import br.com.zup.TipoDaConta
-import br.com.zup.clients.requests.CreatePixKeyRequest
+import br.com.zup.chaves.cria.CreatePixKeyRequest
 import br.com.zup.clients.responsesBacen.AccountType
 import br.com.zup.clients.responsesBacen.BankAccount
 import br.com.zup.clients.responsesBacen.KeyType
 import br.com.zup.clients.responsesERP.Owner
 import br.com.zup.clients.responsesERP.Type
+import br.com.zup.contas.Conta
 import javax.validation.constraints.NotBlank
 import javax.validation.constraints.NotNull
 import javax.validation.constraints.Size

@@ -1,11 +1,11 @@
-package br.com.zup.endpoints
+package br.com.zup.chaves.cria
 
 import br.com.zup.*
-import br.com.zup.clients.ChavePixClient
-import br.com.zup.clients.ClientERP
+import br.com.zup.clients.ItauClient
+import br.com.zup.clients.BacenClient
 import br.com.zup.exceptions.ErrorHandler
-import br.com.zup.repositories.ChavePixRepository
-import br.com.zup.repositories.ContaRepository
+import br.com.zup.chaves.ChavePixRepository
+import br.com.zup.contas.ContaRepository
 import io.grpc.Status
 import io.grpc.stub.StreamObserver
 import org.slf4j.LoggerFactory
@@ -18,8 +18,8 @@ import javax.validation.ConstraintViolationException
 class CriaChavePixEndpoint(
     val contaRepository: ContaRepository,
     val chavePixRepository: ChavePixRepository,
-    val chavePixClient: ChavePixClient,
-    val clientERP: ClientERP
+    val itauClient: ItauClient,
+    val bacenClient: BacenClient
 ) : PixGrpcServiceGrpc.PixGrpcServiceImplBase() {
 
     private val LOGGER = LoggerFactory.getLogger(this.javaClass)
@@ -41,7 +41,7 @@ class CriaChavePixEndpoint(
             val possivelConta = contaRepository.findByClienteId(request.clienteId)
 
             val conta = if (possivelConta.isPresent) possivelConta.get()
-            else clientERP.buscaContaERP(request.clienteId, request.tipoDaConta.toString()).let {
+            else bacenClient.buscaContaERP(request.clienteId, request.tipoDaConta.toString()).let {
                 if (it == null) {
                     throw IllegalStateException("Conta não encontrada")
                 }
@@ -56,7 +56,7 @@ class CriaChavePixEndpoint(
             chavePixRepository.save(novaChavePix.paraChavePix(conta))
 
             LOGGER.info("Cadastrando chave PIX")
-            chavePixClient.cadastra(novaChavePix.paraChavePixRequest(conta))
+            itauClient.cadastra(novaChavePix.paraChavePixRequest(conta))
 
         } catch (e: ConstraintViolationException) {
             responseObserver.onError(

@@ -1,4 +1,4 @@
-package br.com.zup.modelos
+package br.com.zup.contas
 
 import javax.persistence.*
 import javax.validation.constraints.NotBlank

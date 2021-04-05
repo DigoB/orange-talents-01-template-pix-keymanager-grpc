@@ -1,9 +1,9 @@
-package br.com.zup.modelos
+package br.com.zup.chaves
 
 import br.com.zup.TipoDaChave
 import br.com.zup.TipoDaConta
+import br.com.zup.contas.Conta
 import java.time.LocalDateTime
-import java.util.*
 import javax.persistence.*
 
 import javax.validation.constraints.NotBlank
@@ -31,4 +31,8 @@ class ChavePix(
     var id: Long? = null
 
     var criadoEm: LocalDateTime = LocalDateTime.now()
+
+    fun pertence(clienteId: String): Boolean{
+        return this.conta.titular?.id.equals(clienteId)
+    }
 }

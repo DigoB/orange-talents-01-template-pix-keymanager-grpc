@@ -1,4 +1,4 @@
-package br.com.zup.clients.requests
+package br.com.zup.chaves.cria
 
 import br.com.zup.clients.responsesBacen.BankAccount
 import br.com.zup.clients.responsesBacen.KeyType

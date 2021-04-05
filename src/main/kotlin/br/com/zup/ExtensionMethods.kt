@@ -1,7 +1,11 @@
 package br.com.zup
 
+import br.com.zup.chaves.ChavePix
+import br.com.zup.chaves.ChavePixForm
 import br.com.zup.clients.responsesERP.BuscaPorClienteResponse
-import br.com.zup.modelos.*
+import br.com.zup.contas.Conta
+import br.com.zup.contas.Instituicao
+import br.com.zup.contas.Titular
 
 fun CadastraPixRequest.toModel(conta: Conta): ChavePix {
     return ChavePix(
