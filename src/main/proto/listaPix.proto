@@ -1,0 +1,30 @@
+syntax = "proto3";
+
+option java_multiple_files = true;
+option java_package = "br.com.zup";
+option java_outer_classname = "ListaPixGrpc";
+
+package br.com.zup;
+
+import "google/protobuf/timestamp.proto";
+
+service ListaPixService {
+
+  rpc lista(ListaPixRequest) returns (ListaPixResponse) {}
+}
+
+message ListaPixRequest {
+  string clienteId = 1;
+}
+
+message ListaPixResponse {
+  string clienteId         = 1;
+  repeated ChavePix chaves = 2;
+}
+message ChavePix {
+  int64 pixId        = 1;
+  string tipoDaChave = 2;
+  string chave       = 3;
+  string tipoDaConta = 4;
+  string criadaEm    = 5;
+}

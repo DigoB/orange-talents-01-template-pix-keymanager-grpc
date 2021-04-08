@@ -21,6 +21,6 @@ interface ItauClient {
 
     @Get("/api/v1/pix/keys/{key}",
         consumes = [MediaType.APPLICATION_XML], produces = [MediaType.APPLICATION_XML])
-    fun consulta(@PathVariable key: String): HttpResponse<Any>
+    fun consulta(@PathVariable key: String): HttpResponse<CreatePixKeyResponse>
 
 }
